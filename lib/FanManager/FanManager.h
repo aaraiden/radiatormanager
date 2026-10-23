@@ -30,6 +30,7 @@ private:
         uint8_t id;
         bool meassureRPM;
         bool reversed = false;
+        bool pwm_init = false;
         uint8_t pin_pwm;
         uint8_t pin_rpm;
         uint8_t curr_pwm;

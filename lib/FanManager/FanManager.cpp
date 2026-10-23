@@ -89,15 +89,23 @@ bool FanManager::setRPM(uint8_t id, int16_t rpm)
 
 bool FanManager::setPWM(uint8_t id, uint8_t pwm_perc)
 {
-    if(id > m_fans_count)
+    if (id >= m_fans_count || pwm_perc > 100) {
         return false;
+    }
+    if (m_fans[id].pwm_init && m_fans[id].curr_pwm == pwm_perc) {
+        return true;
+    }
+
     uint8_t pwm = 0;
     if(m_fans[id].reversed)
         pwm = 255 - ((pwm_perc * 255) / 100);
     else
         pwm = (pwm_perc * 255) / 100;
+    
+    
     m_fans[id].curr_pwm = pwm_perc;
     analogWrite(m_fans[id].pin_pwm, pwm);
+    m_fans[id].pwm_init = true;
 
     return true;
 }
